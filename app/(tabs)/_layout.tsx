@@ -42,6 +42,14 @@ export default function RootLayout() {
             tabBarIcon: ({ color }) => <Feather name="grid" size={28} color={color} />,
           }}
         />
+        <Tabs.Screen
+          name="offset"
+          options={{
+            title: 'Offset',
+            headerTitle: 'Offset Pagination',
+            tabBarIcon: ({ color }) => <Feather name="sliders" size={28} color={color} />,
+          }}
+        />
       </Tabs>
       <StatusBar style="auto" />
     </ThemeProvider>
