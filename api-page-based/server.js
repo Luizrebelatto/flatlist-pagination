@@ -31,5 +31,5 @@ app.get("/items", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("API rodando em http://localhost:3000");
+  console.log("API running http://localhost:3000");
 });
