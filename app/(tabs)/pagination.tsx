@@ -106,17 +106,6 @@ export default function PaginationScreen() {
     return renderPageButton(pageNum);
   };
 
-  if (error && items.length === 0) {
-    return (
-      <View style={styles.centerContainer}>
-        <Text style={styles.errorText}>Error: {error}</Text>
-        <Text style={styles.errorSubtext}>
-          Make sure the API is running on http://localhost:3000
-        </Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <FlatList

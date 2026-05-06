@@ -54,3 +54,13 @@ onEndReached = { handleLoadMore };
 ```javascript
 onEndReachedThreshold={0.3}
 ```
+
+###### Pagination by number
+
+- does not accumulate the data; it overwrites it
+- Use this when the user is searching for something specific
+
+request: `GET /items?page=N&limit=10`
+response: `{ data, page, limit, totalItems, totalPages }`
+
+- function called when the end of the list is reached
