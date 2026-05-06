@@ -1,4 +1,4 @@
-import { useApi, type Item } from "@/hooks/useApi";
+import type { ApiResponse, Item } from "@/hooks/useApi";
 import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -15,32 +15,47 @@ export default function InfiniteScrollScreen() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loadingMore, setLoadingMore] = useState(false);
-  const { fetchItems, loading, error } = useApi();
+  const [loading, setLoading] = useState(false);
+
+  const fetchPage = useCallback(async (pageNum: number) => {
+    const response = await fetch(
+      `http://localhost:3000/items?page=${pageNum}&limit=${LIMIT}`,
+    );
+    if (!response.ok) throw new Error("Failed to fetch items");
+    return (await response.json()) as ApiResponse;
+  }, []);
 
   useEffect(() => {
     const load = async () => {
-      const result = await fetchItems(1, LIMIT);
-      if (result) {
-        setItems(result.data);
-        setTotalPages(result.totalPages);
+      try {
+        setLoading(true);
+        const data = await fetchPage(1);
+        setItems(data.data);
+        setTotalPages(data.totalPages);
         setPage(1);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     load();
-  }, []);
+  }, [fetchPage]);
 
   const handleLoadMore = useCallback(async () => {
     if (loadingMore || page >= totalPages) return;
-
-    setLoadingMore(true);
-    const nextPage = page + 1;
-    const result = await fetchItems(nextPage, LIMIT);
-    if (result) {
-      setItems((prev) => [...prev, ...result.data]);
+    try {
+      setLoadingMore(true);
+      const nextPage = page + 1;
+      const data = await fetchPage(nextPage);
+      setItems((prev) => [...prev, ...data.data]);
       setPage(nextPage);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingMore(false);
     }
-    setLoadingMore(false);
-  }, [page, totalPages, loadingMore]);
+  }, [page, totalPages, loadingMore, fetchPage]);
 
   const renderItem = ({ item }: { item: Item }) => (
     <View style={styles.item}>

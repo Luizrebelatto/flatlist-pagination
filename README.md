@@ -31,7 +31,7 @@ Here we have two types:
 - infinite scroll
 - number page
 
-###### Infinite scroll
+###### Infinite scroll `app/(tabs)/infinite-scroll.tsx`
 
 - It loads as the user scrolls
 - even though it's infinite, the request isn't made all at once
@@ -55,7 +55,7 @@ onEndReached = { handleLoadMore };
 onEndReachedThreshold={0.3}
 ```
 
-###### Pagination by number
+###### Pagination by number `app/(tabs)/pagination.tsx`
 
 - does not accumulate the data; it overwrites it
 - Use this when the user is searching for something specific
@@ -64,3 +64,15 @@ request: `GET /items?page=N&limit=10`
 response: `{ data, page, limit, totalItems, totalPages }`
 
 - function called when the end of the list is reached
+
+### 2. Off-Set
+
+- don't specify the number of pages
+- you specify how many items you want and define a starting item
+- navigation buttons
+- next / prev or select a specific page
+- replace all
+
+```bash
+/items-offset?offset=20&limit=10
+```

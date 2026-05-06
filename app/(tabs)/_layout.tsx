@@ -27,7 +27,7 @@ export default function RootLayout() {
         }}
       >
         <Tabs.Screen
-          name="infinite-scroll"
+          name="index"
           options={{
             title: 'Infinite Scroll',
             headerTitle: 'Infinite Scroll Pagination',
@@ -48,6 +48,14 @@ export default function RootLayout() {
             title: 'Offset',
             headerTitle: 'Offset Pagination',
             tabBarIcon: ({ color }) => <Feather name="sliders" size={28} color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="cursor"
+          options={{
+            title: 'Cursor',
+            headerTitle: 'Cursor Pagination',
+            tabBarIcon: ({ color }) => <Feather name="chevrons-right" size={28} color={color} />,
           }}
         />
       </Tabs>

@@ -1,4 +1,4 @@
-import { useApi, type Item } from "@/hooks/useApi";
+import type { ApiResponse, Item } from "@/hooks/useApi";
 import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -16,14 +16,23 @@ export default function PaginationScreen() {
   const [items, setItems] = useState<Item[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const { fetchItems, loading, error } = useApi();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
-      const result = await fetchItems(currentPage, LIMIT);
-      if (result) {
-        setItems(result.data);
-        setTotalPages(result.totalPages);
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `http://localhost:3000/items?page=${currentPage}&limit=${LIMIT}`,
+        );
+        if (!response.ok) throw new Error("Failed to fetch items");
+        const data: ApiResponse = await response.json();
+        setItems(data.data);
+        setTotalPages(data.totalPages);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     load();
